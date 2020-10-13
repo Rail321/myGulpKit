@@ -1,0 +1,25 @@
+{
+  "name": "mygulpkit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rail321/myGulpKit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rail321/myGulpKit/issues"
+  },
+  "homepage": "https://github.com/Rail321/myGulpKit#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.12",
+    "gulp": "^4.0.2",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-nunjucks": "^5.1.0"
+  }
+}
