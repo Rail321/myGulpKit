@@ -19,6 +19,7 @@
   "devDependencies": {
     "browser-sync": "^2.26.12",
     "gulp": "^4.0.2",
+    "gulp-beautify": "^3.0.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-nunjucks": "^5.1.0"
   }
