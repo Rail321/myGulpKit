@@ -19,9 +19,14 @@ function htmlProcessingFunction() {
 			collapseWhitespace: true,
 		}))
 		.pipe( dest( 'dist/'))
+		.pipe( browserSync.stream())
+}
+
+function watchingFunction() {
+	watch( 'src/**/*.njk', htmlProcessingFunction);
 }
 
 exports.browserSyncFunction		= browserSyncFunction;
 exports.htmlProcessingFunction	= htmlProcessingFunction;
 
-exports.default	= parallel( htmlProcessingFunction, browserSyncFunction);
+exports.default	= parallel( htmlProcessingFunction, browserSyncFunction, watchingFunction);
