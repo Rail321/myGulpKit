@@ -4,6 +4,7 @@ const browserSync	= require( 'browser-sync').create();
 const nunjucks		= require( 'gulp-nunjucks');
 const htmlmin		= require( 'gulp-htmlmin');
 const beautify		= require( 'gulp-beautify');
+const del			= require( 'del');
 
 paths = {
 	dist: 'dist/',
@@ -40,8 +41,13 @@ function beautifyFiles() {
 		.pipe( dest( 'dist/'))
 }
 
+function deleteDist() {
+	del( paths.dist);
+}
+
 exports.serverHost		= serverHost;
 exports.htmlProcessing	= htmlProcessing;
 exports.beautifyFiles	= beautifyFiles;
+exports.deleteDist		= deleteDist;
 
-exports.default	= parallel( htmlProcessing, serverHost, filesWatching);
+exports.default	= parallel( deleteDist, htmlProcessing, serverHost, filesWatching);
