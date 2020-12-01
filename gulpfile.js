@@ -5,37 +5,43 @@ const nunjucks		= require( 'gulp-nunjucks');
 const htmlmin		= require( 'gulp-htmlmin');
 const beautify		= require( 'gulp-beautify');
 
-function browserSyncFunction() {
+paths = {
+	dist: 'dist/',
+	njk: 'src/njk/*.njk',
+}
+
+function serverHost() {
 	browserSync.init( {
-		server: { baseDir: 'dist/'},
+		server: { baseDir: paths.dist },
 		notify: false,
 		online: true,
+		https: true,
 	})
 }
 
-function htmlProcessingFunction() {
-	return src( 'src/**.njk')
+function htmlProcessing() {
+	return src( paths.njk)
 		.pipe( nunjucks.compile())
 		.pipe( htmlmin( {
 			collapseWhitespace: true,
 		}))
-		.pipe( dest( 'dist/'))
+		.pipe( dest( paths.dist))
 		.pipe( browserSync.stream())
 }
 
-function watchingFunction() {
-	watch( 'src/**/*.njk', htmlProcessingFunction);
+function filesWatching() {
+	watch( 'src/**/*.njk', htmlProcessing);
 }
 
-function beautifyFunction() {
+function beautifyFiles() {
 	return src( 'src/**.njk')
 		.pipe( nunjucks.compile())
 		.pipe( beautify.html( { indent_with_tabs: true}))
 		.pipe( dest( 'dist/'))
 }
 
-exports.browserSyncFunction		= browserSyncFunction;
-exports.htmlProcessingFunction	= htmlProcessingFunction;
-exports.beautifyFunction			= beautifyFunction;
+exports.serverHost		= serverHost;
+exports.htmlProcessing	= htmlProcessing;
+exports.beautifyFiles	= beautifyFiles;
 
-exports.default	= parallel( htmlProcessingFunction, browserSyncFunction, watchingFunction);
+exports.default	= parallel( htmlProcessing, serverHost, filesWatching);
