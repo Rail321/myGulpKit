@@ -2,6 +2,11 @@
 {% extends 'templates/template.njk' %}
 {% block content %}
 {% include 'blocks/header.njk' %}
-<p>Это типо главная страница!</p>
+<div class="wrapper">
+	<div class="container">
+		<h2 class="title">Заголовок второго уровня.</h2>
+		<p>Какой-то абзац.</p>
+	</div>
+</div>
 {% include 'blocks/footer.njk' %}
 {% endblock %}
