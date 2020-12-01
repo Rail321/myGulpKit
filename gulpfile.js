@@ -7,17 +7,27 @@ const beautify			= require( 'gulp-beautify');
 const sass				= require( 'gulp-sass');
 const autoprefixer	= require('gulp-autoprefixer');
 const cleanCss			= require( 'gulp-clean-css');
+const concat			= require( 'gulp-concat');
+const uglify			= require( 'gulp-uglify-es').default;
+const imageMin			= require( 'gulp-imagemin');
+const newer				= require( 'gulp-newer');
 
 paths = {
 	dist: 'dist/',
 	src: 'src/',
 	njk: 'njk/*.njk',
 	sass: 'sass/main.sass',
+	js: 'js/**/*.js',
+	img: 'img/**/*',
 	html: '',
 	css: 'css/',
+	distJs: 'js/',
+	distImg: 'img/',
 	watch: {
 		njk: 'src/njk/**/*.njk',
 		sass: 'sass/**/*.sass',
+		js: 'js/**/*.js',
+		img: 'img/**/*',
 	},
 }
 
@@ -33,6 +43,8 @@ function serverHost() {
 function filesWatching() {
 	watch( paths.src + paths.watch.njk, htmlProcessing);
 	watch( paths.src + paths.watch.sass, cssProcessing);
+	watch( paths.src + paths.watch.js, jsProcessing);
+	watch( paths.src + paths.watch.img, imagesProcessing);
 }
 
 function htmlProcessing() {
@@ -63,6 +75,21 @@ function cssProcessing() {
 		.pipe( browserSync.stream())
 }
 
+function jsProcessing() {
+	return src( paths.src + paths.js)
+	.pipe( concat( 'main.js'))
+	.pipe( uglify())
+	.pipe( dest( paths.dist + paths.distJs))
+	.pipe( browserSync.stream())
+}
+
+function imagesProcessing() {
+	return src( paths.src + paths.img)
+	.pipe( newer( paths.dist + paths.distImg)) 
+	.pipe( imageMin())
+	.pipe( dest( paths.dist + paths.distImg))
+}
+
 function beautifyFiles() {
 	return src( paths.src + paths.njk)
 		.pipe( nunjucks.compile())
@@ -72,4 +99,4 @@ function beautifyFiles() {
 
 exports.beautifyFiles	= beautifyFiles;
 
-exports.default	= parallel( htmlProcessing, cssProcessing, serverHost, filesWatching);
+exports.default	= parallel( htmlProcessing, cssProcessing, jsProcessing, imagesProcessing, serverHost, filesWatching);
