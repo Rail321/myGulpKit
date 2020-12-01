@@ -19,15 +19,18 @@ paths = {
 	sass: 'sass/main.sass',
 	js: 'js/**/*.js',
 	img: 'img/**/*',
+	fonts: 'fonts/**/*',
 	html: '',
 	css: 'css/',
 	distJs: 'js/',
 	distImg: 'img/',
+	distFonts: 'fonts',
 	watch: {
 		njk: 'src/njk/**/*.njk',
 		sass: 'sass/**/*.sass',
 		js: 'js/**/*.js',
 		img: 'img/**/*',
+		fonts: 'fonts/**/*',
 	},
 }
 
@@ -90,6 +93,11 @@ function imagesProcessing() {
 	.pipe( dest( paths.dist + paths.distImg))
 }
 
+function fontsProcessing() {
+	return src( paths.src + paths.fonts)
+	.pipe( dest( paths.dist + paths.distFonts))
+}
+
 function beautifyFiles() {
 	return src( paths.src + paths.njk)
 		.pipe( nunjucks.compile())
@@ -99,4 +107,4 @@ function beautifyFiles() {
 
 exports.beautifyFiles	= beautifyFiles;
 
-exports.default	= parallel( htmlProcessing, cssProcessing, jsProcessing, imagesProcessing, serverHost, filesWatching);
+exports.default	= parallel( htmlProcessing, cssProcessing, jsProcessing, imagesProcessing, fontsProcessing, serverHost, filesWatching);
